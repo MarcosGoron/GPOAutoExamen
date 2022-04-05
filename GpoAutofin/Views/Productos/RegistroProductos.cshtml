@@ -1,0 +1,66 @@
+﻿@model GpoAutofin.Data.Models.Productos
+
+@{
+    ViewBag.Title = "RegistroProductos";
+}
+
+<h2>Registro de Productos</h2>
+<p align="right"><a href="@Url.Action("GetFacturas", "Facturas")" class="btn btn-danger">Registrar Producto <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span></a></p>
+<div>
+    <table class="table">
+        <tr>
+            <th><input id="txtNombre" type="text" style="margin-right:5px;" placeholder="Nombre" class="form-control" /></th>
+            <th><input id="txtMarca" type="text" style="margin-right:5px;" placeholder="Marca" class="form-control" /></th>
+            <th><input id="txtCosto" type="text" style="margin-right:5px;" placeholder="Costo" class="form-control" /></th>
+            <th><input id="txtPrecioVenta" type="text" style="margin-right:5px;" placeholder="Precio venta" class="form-control" /></th>
+        </tr>
+        <tr>
+            <th>
+                <button id="btnInsertProd" class="btn btn-primary">Guardar</button>
+            </th>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <table id="tblSucursal1" class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr align="center">
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Marca</th>
+                <th>Costo</th>
+                <th>Precio venta</th>
+                <th>Editar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in ViewBag.Productos)
+            {
+                <tr>
+                    <td>@i.IdProducto</td>
+                    <td>@i.Nombre</td>
+                    <td>@i.Marca</td>
+                    <td>@i.Costo</td>
+                    <td>@i.PrecioVenta</td>
+                    <td align="center"><a href="@Url.Action("EditarProducto", "Productos", new { IdProducto = i.IdProducto})" class="btn btn-danger">Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $("#btnInsertProd").click(function () {
+            var nombre = $("#txtNombre").val();
+            var marca = $("#txtMarca").val();
+            var costo = $("#txtCosto").val();
+            var precioVenta = $("#txtPrecioVenta").val();
+            var url = '@Url.Action("RegistroProductos", "Productos")'
+
+            $.post(url, { nombre: nombre, marca: marca, costo: costo, precioVenta: precioVenta},
+                function (guarda) {
+                    location.reload(true);
+                });
+        });
+    </script>
+}

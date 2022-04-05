@@ -1,0 +1,62 @@
+﻿@model GpoAutofin.Data.Models.RegistroClientes
+
+@{
+    ViewBag.Title = "RegistroClientes";
+}
+
+<h2>Registro de Clientes</h2>
+<p align="right"><a href="@Url.Action("GetFacturas", "Facturas")" class="btn btn-danger">Registrar Producto <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span></a></p>
+<div>
+    <table class="table">
+        <tr>
+            <th><input id="txtNombre" type="text" style="margin-right:5px;" placeholder="Nombre" class="form-control" /></th>
+            <th><input id="txtDomicilio" type="text" style="margin-right:5px;" placeholder="Domicilio" class="form-control" /></th>
+            <th><input id="txtEmail" type="text" style="margin-right:5px;" placeholder="Email" class="form-control" /></th>
+        </tr>
+        <tr>
+            <th>
+                <button id="btnInsertarCliente" class="btn btn-primary">Guardar</button>
+            </th>
+        </tr>
+    </table>
+    <br />
+    <br />
+    <table id="tblSucursal1" class="table table-striped table-bordered">
+        <thead class="table-dark">
+            <tr align="center">
+                <th>ID</th>
+                <th>Nombre</th>
+                <th>Domicilio</th>
+                <th>Email</th>
+                <th>Actualizar</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var i in ViewBag.Clientes)
+            {
+                <tr>
+                    <td>@i.IdCliente</td>
+                    <td>@i.Nombre</td>
+                    <td>@i.Domicilio</td>
+                    <td>@i.Email</td>
+                    <td align="center"><a href="@Url.Action("ActualizarCliente", "Clientes", new { IdCliente = i.IdCliente})" class="btn btn-danger">Editar <span class="glyphicon glyphicon-edit" aria-hidden="true"></span></a></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $("#btnInsertarCliente").click(function () {
+            var nombre = $("#txtNombre").val();
+            var domicilio = $("#txtDomicilio").val();
+            var email = $("#txtEmail").val();
+            var url = '@Url.Action("RegistroClientes", "Clientes")'
+
+            $.post(url, { nombre: nombre, domicilio: domicilio, email: email},
+                function (guarda) {
+                    location.reload(true);
+                });
+        });
+    </script>
+}

@@ -1,0 +1,48 @@
+﻿@model GpoAutofin.Data.Models.Factura
+@{
+    ViewBag.Title = "GenerarFactura";
+}
+
+<h2>Generar Factura</h2>
+<p align="right">
+    <a href="@Url.Action("GetFacturas", "Facturas")" class="btn btn-danger">Cancelar <span class="glyphicon glyphicon-circle-arrow-left" aria-hidden="true"></span></a>
+</p>
+<div>
+    <table class="table">
+        <tr>
+            <th><input id="txtNumeroFactura" type="text" style="margin-right:5px;" placeholder="Numero de Factura" class="form-control" /></th>
+            <th><input id="txtCantidad" type="text" style="margin-right:5px;" placeholder="Cantidad" class="form-control" /></th>
+        </tr>
+        <tr>
+            <th>@Html.DropDownList("idProducto", new SelectList(ViewBag.Productos, "idProducto", "Nombre"), new { @id = "ddlProducto", @class = "form-control" })</th>
+            <th>@Html.DropDownList("idCliente", new SelectList(ViewBag.Clientes, "idCliente", "Nombre"), new { @id = "ddlCliente", @class = "form-control" })</th>
+        </tr>
+        <tr>
+            <th>
+                @Html.EditorFor(model => model.FechaHora, new { htmlAttributes = new { @id = "dtpFecha", @class = "form-control datepicker", Value = @ViewData["fechaActual"], @type = "date" } })
+            </th>
+        </tr>
+        <tr>
+            <th>
+                <button id="btnGenerarFactura" class="btn btn-primary glyphicon glyphicon-save"> Guardar</button>
+            </th>
+        </tr>
+    </table>
+</div>
+@section Scripts {
+    <script type="text/javascript">
+        $("#btnGenerarFactura").click(function () {
+            var NumeroFactura = $("#txtNumeroFactura").val();
+            var Cantidad = $("#txtCantidad").val();
+            var IdProducto = $("#ddlProducto").val();
+            var IdCliente = $("#ddlCliente").val();
+            var FechaHora = $("#dtpFecha").val();
+            var url = '@Url.Action("GenerarFactura", "Facturas")'
+
+            $.post(url, { NumeroFactura: NumeroFactura, Cantidad: Cantidad, IdProducto: IdProducto, IdCliente: IdCliente, FechaHora: FechaHora},
+                function (guarda) {
+                    location.reload(true);
+                });
+        });
+    </script>
+}
